@@ -7,9 +7,8 @@ const ForegroundControls = ({ setGravity }) => {
         <Slider 
             defaultValue={0} 
             min={0} 
-            max={10} 
-            step={1}
-            marks
+            max={3} 
+            step={0.01}
             onChange={(e) => {
                 setGravity(e.target.value);
             }}

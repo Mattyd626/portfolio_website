@@ -32,9 +32,9 @@ const computeCameraMatrix = (eye, lookAt) => {
 
 const radians = (deg) => deg * (Math.PI / 180);
 
-const Sketch = (gravity) => (p) => {
+const Sketch = (p) => {
 
-    const eye = [0, 0, 15];
+    const eye = [0, -1, 15];
     const lookAt = [0, 0, 0];
     let shader;
 
@@ -49,8 +49,8 @@ const Sketch = (gravity) => (p) => {
     };
 
     p.draw = () => {
-        lookAt[0] = -(p.mouseX - p.width / 2.0) / p.width * 2;
-        lookAt[1] = -(p.mouseY - p.height / 2.0) / p.height * 2;
+        lookAt[0] = -(p.mouseX - p.width / 2.0) / p.width * 20;
+        lookAt[1] = -(p.mouseY - p.height / 2.0) / p.height * 20;
         const cameraMatrix = computeCameraMatrix(eye, lookAt);
         shader.setUniform("cameraMatrix", cameraMatrix);
         shader.setUniform("eye", eye);
@@ -58,7 +58,7 @@ const Sketch = (gravity) => (p) => {
         shader.setUniform("fov", radians(90));
         shader.setUniform("resolution", [p.width, p.height]);
         shader.setUniform("time", p.millis() / 1000.0);
-        shader.setUniform("gravity", gravity);
+        shader.setUniform("gravity", p?.gravity || 0);
         p.filter(shader);
     };
 };

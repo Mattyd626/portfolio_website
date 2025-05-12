@@ -1,16 +1,25 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import p5 from "p5";
 
-const P5Wrapper = ({ sketch }) => {
+const P5Wrapper = ({ sketch, ...props }) => {
   const canvasRef = useRef();
+  const p5Ref = useRef();
 
   useEffect(() => {
-    const p5Instance = new p5(sketch, canvasRef.current);
+    p5Ref.current = new p5((p) => sketch(p), canvasRef.current);
 
     return () => {
-      p5Instance.remove();
+      p5Ref.current.remove();
     };
   }, [sketch]);
+
+  useEffect(() => {
+    if (p5Ref.current) {
+      Object.entries(props).forEach(([key, value]) => {
+        p5Ref.current[key] = value;
+      });
+    }
+  }, [props]);
 
   return <div ref={canvasRef} style={{margin: "0px", padding: "0px", overflow: "hidden"}}></div>;
 };
